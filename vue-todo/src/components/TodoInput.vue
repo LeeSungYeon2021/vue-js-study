@@ -2,7 +2,7 @@
   <div class="inputBox shadow">
     <input type="text" v-model="newTodoItem" v-on:keyup.enter="addTodo">
     <span class="addContainer" v-on:click="addTodo">
-      <font-awesome-icon icon="fa-solid fa-plus" />
+      <font-awesome-icon icon="fa-solid fa-square-plus" size="3x" />
     </span>
   </div>
 </template>
@@ -17,11 +17,8 @@ export default {
   methods: {
     addTodo: function() {
       if(this.newTodoItem !== '') {
-        var obj = {completed:false, item:this.newTodoItem};
-        // 클릭 시 input value 가져오기
-        console.log(this.newTodoItem);
-        // 저장하는 로직
-        localStorage.setItem(this.newTodoItem,JSON.stringify(obj));
+        // this.$emit('이벤트 이름',인자1,인자2...);
+        this.$emit('addTodoItem',this.newTodoItem);
         this.clearInput();
       }
     },

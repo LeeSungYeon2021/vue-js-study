@@ -1,17 +1,17 @@
 <template>
   <div>
     <ul>
-      <li v-for="(item, index) in todoItems" v-bind:key="item.item" class="shadow">
+      <li v-for="(todoItem, index) in propsdata" v-bind:key="todoItem.item" class="shadow">
         <!-- check 버튼 영역 -->
-        <span v-bind:class="{checkBtnCompleted: item.completed}" v-on:click="toggleComplete(item)">
+        <span v-bind:class="{checkBtnCompleted:todoItem.completed}" v-on:click="toggleComplete(todoItem)">
             <font-awesome-icon icon="fa-solid fa-check" />
         </span>
         <!-- list 영역 -->
-        <span v-bind:class="{textCompleted: item.completed }">
-            {{ item.item }}
+        <span>
+            {{ todoItem.item }}
         </span>
         <!-- delete 버튼 영역 -->
-        <span class="removeBtn" v-on:click="removeTodo(item, index)">
+        <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
           <font-awesome-icon icon="fa-solid fa-trash-can" />
         </span>
       </li>
@@ -21,32 +21,18 @@
 
 <script>
 export default {
-  data: function() {
-    return {
-      todoItems: []
-    }
-  },
+  props:['propsdata'],
   methods: {
-    removeTodo: function(item, index) {
-      localStorage.removeItem(item.item);
+    removeTodo: function(todoItem, index) {
+      localStorage.removeItem(todoItem.item);
       this.todoItems.splice(index,1);
     },
-    toggleComplete: function(item) {
-      item.completed = !item.completed;
-      localStorage.removeItem(item.item);
-      localStorage.setItem(item.item,JSON.stringify(item));
+    toggleComplete: function(todoItem) {
+      todoItem.completed = !todoItem.completed;
+      localStorage.removeItem(todoItem.item);
+      localStorage.setItem(todoItem.item,JSON.stringify(todoItem));
     }
   },
-  created: function() {
-    if (localStorage.length > 0) {
-      for(var i=0;i<localStorage.length;i++) {
-        if(localStorage.key(i) !== 'loglevel:webpack-dev-server') {
-          this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
-          // this.todoItems.push(localStorage.key(i));
-        }
-      }
-    }
-  }
 }
 </script>
 
