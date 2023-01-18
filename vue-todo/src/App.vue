@@ -4,8 +4,11 @@
     <!-- <TodoInput v-on:하위컴포넌트에서 발생시킨 이벤트 이름 = "현 컴포넌트의 메소드명"></TodoInput> -->
     <TodoInput v-on:addTodoItem="addOneItem"></TodoInput>
     <!-- <TodoList v-bind:내려보낼 프롭스 속성이름 = "현 위치의 컴포넌트 데이터 속성"></TodoList> -->
-    <TodoList v-bind:propsdata="todoItems"></TodoList>
-    <TodoFooter></TodoFooter>
+    <TodoList v-bind:propsdata="todoItems" 
+              v-on:removeItem="removeOneItem" 
+              v-on:toggleItem="toggleOneItem">
+    </TodoList>
+    <TodoFooter v-on:clearItem="clearAllItem"></TodoFooter>
   </div>
 </template>
 
@@ -29,18 +32,24 @@ export default {
       // 저장하는 로직
       localStorage.setItem(todoItem,JSON.stringify(obj));
       this.todoItems.push(obj);
+    },
+    removeOneItem: function(todoItem,index) {
+      localStorage.removeItem(todoItem.item);
+      this.todoItems.splice(index,1);
+    },
+    toggleOneItem: function(todoItem,index) {
+      // todoItem.completed = !todoItem.completed;
+      this.todoItems[index].completed = !this.todoItems[index].completed;
+      localStorage.removeItem(todoItem.item);
+      localStorage.setItem(todoItem.item,JSON.stringify(todoItem));
+    },
+    clearAllItem: function() {
+       // local storage 값 모두 삭제
+       localStorage.clear();
+       // 배열 빈 값 처리
+       this.todoItems = []
     }
   },
-  // created: function() {
-  //   if(localStorage.length > 0) {
-  //     for(var i=0;i<localStorage.length;i++) {
-  //       if(localStorage.key(i) !== 'loglevel:webpack-dev-server') {
-  //         this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
-  //         // this.todoItems.push(localStorage.key(i));
-  //       }
-  //     }
-  //   }
-  // },
   created: function() {
     if (localStorage.length > 0) {
       for (var i = 0; i < localStorage.length; i++) {
