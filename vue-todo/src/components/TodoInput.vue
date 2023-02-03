@@ -4,14 +4,23 @@
     <span class="addContainer" v-on:click="addTodo">
       <font-awesome-icon icon="fa-solid fa-square-plus" size="3x" />
     </span>
+    <TodoModal  v-if="showModal" @close="showModal=false">
+        <!-- slot : 특정 컴포넌트의 재사용 할 수 있는 속성 -->
+        <h3 slot=header>Header!</h3>  
+        <h3 slot="body">Body!</h3>  
+        <h3 slot="footer">Footer!</h3>  
+    </TodoModal>
   </div>
 </template>
 
 <script>
+import TodoModal  from './common/TodoModal.vue'
+
 export default {
   data: function() {
     return {
-      newTodoItem: ""
+      newTodoItem: "",
+      showModal: false
     }
   },
   methods: {
@@ -20,11 +29,16 @@ export default {
         // this.$emit('이벤트 이름',인자1,인자2...);
         this.$emit('addTodoItem',this.newTodoItem);
         this.clearInput();
+      }else {
+        this.showModal = !this.showModal;
       }
     },
     clearInput: function() {
       // 클릭 후 공백처리
       this.newTodoItem = "";
+    },
+    components: {
+      'TodoModal':TodoModal,
     }
   }
 }

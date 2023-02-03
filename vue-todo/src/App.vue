@@ -63,7 +63,7 @@ export default {
     // 컴포넌트 태그명 : 컴포넌트 내용
     'TodoHeader':TodoHeader, 
     'TodoInput':TodoInput, 
-    TodoList:TodoList, 
+    'TodoList':TodoList, 
     'TodoFooter':TodoFooter, 
   }
 }
